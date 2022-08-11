@@ -6,7 +6,7 @@ export const Footer = () => {
     <Container
       fluid
       variant="dark"
-      className="bg-dark py-5 text-light text-center"
+      className="bg-dark py-5 text-light text-center admin-login-footer"
     >
       &copy; copy right all reserved 2022 || Made by PK
     </Container>
