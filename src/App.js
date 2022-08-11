@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminRegistration } from "./pages/admin-registration/AdminRegistration";
+import EmailVerification from "./pages/admin-registration/EmailVerification";
 import { LogIn } from "./pages/logIn/LogIn";
 function App() {
   return (
@@ -10,6 +11,10 @@ function App() {
           <Route
             path="/register"
             element={<AdminRegistration></AdminRegistration>}
+          ></Route>
+          <Route
+            path="/admin/verify-email"
+            element={<EmailVerification></EmailVerification>}
           ></Route>
         </Routes>
       </BrowserRouter>

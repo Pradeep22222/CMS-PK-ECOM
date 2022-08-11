@@ -1,27 +1,35 @@
 import React, { useState } from "react";
 import { Header } from "../../components/header/Header";
-import { Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import { Footer } from "../../components/footer/Footer";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { CustomInputField } from "../../customInputField/CustomInputField";
+import { postUser } from "../../helpers/axiosHelper";
 export const AdminRegistration = () => {
   const [form, setForm] = useState({});
+  const [response, setResponse] = useState({});
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    const { confirmPassword, ...rest } = form;
+    if (confirmPassword !== rest.password) {
+      return alert("password donot match");
+    }
+    const result = await postUser(rest);
+    setResponse(result);
   };
+  console.log(response);
   const fields = [
     {
       label: "first name",
       name: "fName",
       type: "text",
       placeholder: "enter first name",
-      require: true,
+      required: true,
     },
     {
       label: "last name",
@@ -35,42 +43,42 @@ export const AdminRegistration = () => {
       name: "email",
       type: "email",
       placeholder: "enter email",
-      require: true,
+      required: true,
     },
     {
       label: "phone number",
-      name: "phonenumber",
+      name: "phone",
       type: "number",
       placeholder: "enter number",
-      require: true,
+      required: true,
     },
     {
       label: "DOB",
       name: "dob",
       type: "date",
       placeholder: "enter date of birth",
-      require: true,
+      required: true,
     },
     {
       label: "Address",
       name: "address",
       type: "text",
       placeholder: "enter address",
-      require: true,
+      required: true,
     },
     {
       label: "password",
       name: "password",
       type: "password",
       placeholder: "enter password",
-      require: true,
+      required: true,
     },
     {
       label: "confirmPassword",
       name: "confirmPassword",
       type: "password",
       placeholder: "enter password",
-      require: true,
+      required: true,
     },
   ];
   return (
@@ -80,6 +88,13 @@ export const AdminRegistration = () => {
         <div className="form">
           <Form onSubmit={handleOnSubmit}>
             <h1 className="text-center ">New Admin Registration</h1>
+            {response.message && (
+              <Alert
+                variant={response.status === "success" ? "success" : "danger"}
+              >
+                {response.message}
+              </Alert>
+            )}
             {fields.map((item, i) => (
               <CustomInputField
                 key={i}
